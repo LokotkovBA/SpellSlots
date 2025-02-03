@@ -1,0 +1,1 @@
+export const MAX_CONVERTION_SPELL_SLOT_LEVEL = 5;
