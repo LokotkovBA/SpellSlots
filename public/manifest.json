@@ -6,7 +6,7 @@
     "title": "Spell Slots",
     "icon": "/favicon.ico",
     "popover": "/",
-    "height": 600,
+    "height": 250,
     "width": 400
   }
 }

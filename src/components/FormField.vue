@@ -10,7 +10,7 @@ const numberModel = defineModel<number>('number');
 </script>
 
 <template>
-  <section class="flex justify-between gap-3">
+  <section class="flex items-center justify-between gap-3">
     {{ title }}
     <input
       v-if="isCheckbox"

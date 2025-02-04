@@ -6,6 +6,7 @@ import type { SpellSlotInfo, ModalRef } from './utils/types';
 import FormField from './components/FormField.vue';
 import { SPConvertion } from './utils/mappers';
 import { MAX_CONVERTION_SPELL_SLOT_LEVEL } from './utils/consts';
+import MainButton from './components/MainButton.vue';
 
 const slotModal = ref<ModalRef>(null);
 const spModal = ref<ModalRef>(null);
@@ -121,8 +122,8 @@ function convertSP() {
 </script>
 
 <template>
-  <main class="flex w-full flex-col items-center gap-6 p-10">
-    <section class="flex flex-wrap justify-center gap-6">
+  <main class="flex w-full flex-col items-start gap-4 p-5">
+    <section class="flex flex-wrap justify-center gap-3">
       <SpellSlotGroup
         @open-edit="openEdit"
         :count="slot.count"
@@ -142,20 +143,16 @@ function convertSP() {
       />
     </section>
 
-    <section class="flex flex-col gap-2">
-      <button @click="slotModal?.show()" class="rounded bg-yellow-600 px-2 py-1">Edit</button>
-      <button
-        v-if="sorceryPoints.count > 0"
-        @click="openConvert()"
-        class="rounded bg-yellow-600 px-2 py-1 disabled:bg-gray-600"
-      >
+    <section class="flex gap-2">
+      <MainButton @click="slotModal?.show()">Edit</MainButton>
+      <MainButton v-if="sorceryPoints.count > 0" @click="openConvert()">
         Convert sorcery points
-      </button>
+      </MainButton>
     </section>
   </main>
 
-  <ModalWrapper centered class="self-center rounded bg-slate-800 p-6 text-white" ref="slotModal">
-    <form @submit.prevent="edit" class="flex flex-col gap-4 text-2xl">
+  <ModalWrapper centered class="self-center rounded bg-slate-800 p-4 text-white" ref="slotModal">
+    <form @submit.prevent="edit" class="flex flex-col gap-3 text-xs">
       Edit slots
       <FormField v-if="!toAdd.sorcerer" title="Level:" v-model:number="toAdd.level" />
       <FormField title="Count:" v-model:number="toAdd.count" />
@@ -171,7 +168,7 @@ function convertSP() {
         is-checkbox
         v-model:checkbox="toAdd.sorcerer"
       />
-      <button class="rounded bg-yellow-600 p-2 text-slate-950" type="submit">Edit</button>
+      <MainButton type="submit">Edit</MainButton>
     </form>
   </ModalWrapper>
 
@@ -180,13 +177,7 @@ function convertSP() {
       Convert sorcery points to spell slots
       <FormField title="Level:" v-model:number="toConvert.level" />
       <FormField title="Count:" v-model:number="toConvert.count" />
-      <button
-        :disabled="convertDisabled"
-        class="rounded bg-yellow-600 p-2 text-slate-950 disabled:bg-gray-600"
-        type="submit"
-      >
-        Convert
-      </button>
+      <MainButton :disabled="convertDisabled" type="submit"> Convert </MainButton>
     </form>
   </ModalWrapper>
 </template>
