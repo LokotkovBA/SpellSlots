@@ -172,8 +172,8 @@ function convertSP() {
     </form>
   </ModalWrapper>
 
-  <ModalWrapper centered class="mx-4 self-center rounded bg-slate-800 p-6 text-white" ref="spModal">
-    <form @submit.prevent="convertSP" class="flex flex-col gap-4 text-center text-2xl">
+  <ModalWrapper centered class="mx-2 self-center rounded bg-slate-800 p-4 text-white" ref="spModal">
+    <form @submit.prevent="convertSP" class="flex flex-col gap-4 text-center text-sm">
       Convert sorcery points to spell slots
       <FormField title="Level:" v-model:number="toConvert.level" />
       <FormField title="Count:" v-model:number="toConvert.count" />
