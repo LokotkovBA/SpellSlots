@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@owlbear-rodeo/sdk": "^3.1.0",
     "@tailwindcss/vite": "^4.0.3",
     "pinia": "^2.3.1",
     "tailwindcss": "^4.0.3",
