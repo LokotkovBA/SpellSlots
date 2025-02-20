@@ -37,7 +37,9 @@ function restoreSlots() {
     @contextmenu.ctrl.prevent="restoreSlots"
     class="flex cursor-pointer flex-col items-center gap-1 rounded bg-slate-800 p-2"
   >
-    <h2 class="text-sm text-white capitalize select-none">{{ sorcerer ? 'SP' : level }}</h2>
+    <h2 class="text-sm text-white capitalize select-none">
+      {{ sorcerer ? 'SP' : level }}
+    </h2>
     <section class="grid grid-cols-2 gap-2">
       <SpellSlot
         :warlock="warlock"

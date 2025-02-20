@@ -11,17 +11,9 @@ import MainButton from './components/MainButton.vue';
 const slotModal = ref<ModalRef>(null);
 const spModal = ref<ModalRef>(null);
 
-const sorceryPoints = reactive({
-  level: 0,
-  count: 0,
-  free: 0,
-});
+const sorceryPoints = reactive({ level: 0, count: 0, free: 0 });
 
-const slots = reactive<
-  (SpellSlotInfo & {
-    free: number;
-  })[]
->([
+const slots = reactive<(SpellSlotInfo & { free: number })[]>([
   { warlock: true, level: 1, count: 0, free: 0 },
   { level: 1, count: 1, free: 1 },
   { level: 2, count: 0, free: 0 },
@@ -34,17 +26,9 @@ const slots = reactive<
   { level: 9, count: 0, free: 0 },
 ]);
 
-const toAdd = reactive({
-  level: 1,
-  count: 1,
-  warlock: false,
-  sorcerer: false,
-});
+const toAdd = reactive({ level: 1, count: 1, warlock: false, sorcerer: false });
 
-const toConvert = reactive({
-  level: 1,
-  count: 1,
-});
+const toConvert = reactive({ level: 1, count: 1 });
 const spCost = computed(() => {
   return (SPConvertion[toConvert.level - 1] ?? 0) * toConvert.count;
 });
@@ -95,7 +79,9 @@ function openEdit(slot: SpellSlotInfo) {
 }
 
 function openConvert() {
-  const maxSlotLevel = slots.findIndex(({ count }, index) => index !== 0 && count !== 0);
+  const maxSlotLevel = slots.findIndex(
+    ({ count }, index) => index !== 0 && count !== 0,
+  );
   const maxLevel = Math.min(
     maxSlotLevel,
     (SPConvertion.findIndex((val) => val === sorceryPoints.free) ?? -1) + 1,
@@ -151,10 +137,18 @@ function convertSP() {
     </section>
   </main>
 
-  <ModalWrapper centered class="self-center rounded bg-slate-800 p-4 text-white" ref="slotModal">
+  <ModalWrapper
+    centered
+    class="self-center rounded bg-slate-800 p-4 text-white"
+    ref="slotModal"
+  >
     <form @submit.prevent="edit" class="flex flex-col gap-3 text-xs">
       Edit slots
-      <FormField v-if="!toAdd.sorcerer" title="Level:" v-model:number="toAdd.level" />
+      <FormField
+        v-if="!toAdd.sorcerer"
+        title="Level:"
+        v-model:number="toAdd.level"
+      />
       <FormField title="Count:" v-model:number="toAdd.count" />
       <FormField
         v-if="!toAdd.sorcerer"
@@ -172,12 +166,21 @@ function convertSP() {
     </form>
   </ModalWrapper>
 
-  <ModalWrapper centered class="mx-2 self-center rounded bg-slate-800 p-4 text-white" ref="spModal">
-    <form @submit.prevent="convertSP" class="flex flex-col gap-4 text-center text-sm">
+  <ModalWrapper
+    centered
+    class="mx-2 self-center rounded bg-slate-800 p-4 text-white"
+    ref="spModal"
+  >
+    <form
+      @submit.prevent="convertSP"
+      class="flex flex-col gap-4 text-center text-sm"
+    >
       Convert sorcery points to spell slots
       <FormField title="Level:" v-model:number="toConvert.level" />
       <FormField title="Count:" v-model:number="toConvert.count" />
-      <MainButton :disabled="convertDisabled" type="submit"> Convert </MainButton>
+      <MainButton :disabled="convertDisabled" type="submit">
+        Convert
+      </MainButton>
     </form>
   </ModalWrapper>
 </template>

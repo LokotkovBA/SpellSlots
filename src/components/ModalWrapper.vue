@@ -21,7 +21,11 @@ const visible = ref(false);
 const modalOpenClass = 'modal-open';
 
 function hide(event?: PointerEvent) {
-  if ((event && event.pointerType === 'mouse' && event.button !== 0) || !visible.value) return;
+  if (
+    (event && event.pointerType === 'mouse' && event.button !== 0) ||
+    !visible.value
+  )
+    return;
 
   visible.value = false;
 
