@@ -1,12 +1,12 @@
 {
-  "name": "Spell Slots",
-  "version": "0.0.1",
-  "manifest_version": 1,
-  "action": {
-    "title": "Spell Slots",
-    "icon": "/favicon.ico",
-    "popover": "/",
-    "height": 250,
-    "width": 400
-  }
+    "name": "Spell Slots",
+    "version": "0.0.1",
+    "manifest_version": 1,
+    "action": {
+        "title": "Spell Slots",
+        "icon": "/favicon.ico",
+        "popover": "/",
+        "height": 250,
+        "width": 400
+    }
 }

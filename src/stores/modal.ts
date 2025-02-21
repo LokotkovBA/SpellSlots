@@ -2,13 +2,13 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
 export const useModalStore = defineStore('modal', () => {
-  const count = ref(0);
-  function increment() {
-    count.value++;
-  }
-  function decrement() {
-    count.value--;
-  }
+    const count = ref(0);
+    function increment() {
+        count.value++;
+    }
+    function decrement() {
+        count.value--;
+    }
 
-  return { count, increment, decrement };
+    return { count, increment, decrement };
 });
