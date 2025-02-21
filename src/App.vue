@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import SpellSlotGroup from './components/SpellSlotGroup.vue';
 import ModalWrapper from './components/ModalWrapper.vue';
 import type { SpellSlotInfo, ModalRef } from './utils/types';
@@ -7,6 +7,9 @@ import FormField from './components/FormField.vue';
 import { SPConvertion } from './utils/mappers';
 import { MAX_CONVERTION_SPELL_SLOT_LEVEL } from './utils/consts';
 import MainButton from './components/MainButton.vue';
+import { useORBMetadata } from './composables/useORBMetadata';
+import { spellslotsSchema } from './utils/schemas';
+import { z } from 'zod';
 
 const slotModal = ref<ModalRef>(null);
 const spModal = ref<ModalRef>(null);
@@ -25,6 +28,52 @@ const slots = reactive<(SpellSlotInfo & { free: number })[]>([
   { level: 8, count: 0, free: 0 },
   { level: 9, count: 0, free: 0 },
 ]);
+const { state: slotState } = useORBMetadata('slots', JSON.stringify(slots));
+watch(slots, (currentSlots) => {
+  slotState.value = JSON.stringify(currentSlots);
+});
+watch(
+  slotState,
+  (slotsRaw) => {
+    const { data, success, error } = z
+      .array(spellslotsSchema)
+      .safeParse(JSON.parse(slotsRaw));
+
+    if (!success) {
+      console.error('Failed to parse spell slots', error);
+      return;
+    }
+
+    slots.length = 0;
+
+    for (const slot of data) {
+      slots.push(slot);
+    }
+  },
+  { immediate: true },
+);
+
+const { state: spState } = useORBMetadata('sp', JSON.stringify(sorceryPoints));
+watch(sorceryPoints, (currentPoints) => {
+  spState.value = JSON.stringify(currentPoints);
+});
+watch(
+  spState,
+  (spRaw) => {
+    const { data, success, error } = spellslotsSchema.safeParse(
+      JSON.parse(spRaw),
+    );
+
+    if (!success) {
+      console.error('Failed to parse sorcery points', error);
+      return;
+    }
+
+    sorceryPoints.count = data.count;
+    sorceryPoints.free = data.free;
+  },
+  { immediate: true },
+);
 
 const toAdd = reactive({ level: 1, count: 1, warlock: false, sorcerer: false });
 
