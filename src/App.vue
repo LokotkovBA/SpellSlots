@@ -10,6 +10,8 @@ import MainButton from './components/MainButton.vue';
 import { useORBMetadata } from './composables/useORBMetadata';
 import { spellslotsSchema } from './utils/schemas';
 import { z } from 'zod';
+import { calculateActionWidth } from './utils/helpers';
+import OBR from '@owlbear-rodeo/sdk';
 
 const slotModal = ref<ModalRef>(null);
 const spModal = ref<ModalRef>(null);
@@ -74,6 +76,15 @@ watch(
     },
     { immediate: true },
 );
+
+const groupCount = computed(
+    () =>
+        slots.filter(({ count }) => count).length +
+        (sorceryPoints.count > 0 ? 1 : 0),
+);
+watch(groupCount, (count) => {
+    OBR.action.setWidth(calculateActionWidth(count));
+});
 
 const toAdd = reactive({ level: 1, count: 1, warlock: false, sorcerer: false });
 
@@ -158,7 +169,7 @@ function convertSP() {
 
 <template>
     <main class="flex w-full flex-col items-start gap-4 p-5">
-        <section class="flex flex-wrap justify-center gap-3">
+        <section class="flex justify-center gap-3">
             <SpellSlotGroup
                 @open-edit="openEdit"
                 :count="slot.count"
