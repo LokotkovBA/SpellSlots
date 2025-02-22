@@ -3,7 +3,7 @@ import type { SpellSlotInfo } from '@/utils/types';
 import SpellSlot from './SpellSlot.vue';
 
 const props = defineProps<SpellSlotInfo>();
-const free = defineModel<number>('free');
+const free = defineModel<number>('free', { default: 0 });
 const emits = defineEmits<{
     use: [];
     openEdit: [slot: SpellSlotInfo];
@@ -37,17 +37,36 @@ function restoreSlots() {
         @contextmenu.ctrl.prevent="restoreSlots"
         class="flex cursor-pointer flex-col items-center gap-1 rounded bg-slate-800 p-2"
     >
-        <h2 class="text-sm text-white capitalize select-none">
+        <h2 class="text-sm font-bold text-white capitalize select-none">
             {{ sorcerer ? 'SP' : level }}
         </h2>
-        <section class="grid grid-cols-2 gap-2">
+        <section v-if="count < 5" class="grid grid-cols-2 gap-2">
             <SpellSlot
                 :warlock="warlock"
                 :sorcerer="sorcerer"
-                :free="num <= (free ?? 0)"
+                :free="num <= free"
                 :key="num"
                 v-for="num in count"
             />
+        </section>
+        <section v-else>
+            <SpellSlot
+                class="flex items-center justify-center"
+                :warlock="warlock"
+                :sorcerer="sorcerer"
+                :free="free > 0"
+                big
+            >
+                <span
+                    v-if="free"
+                    :class="{
+                        'text-2xl text-white select-none': true,
+                        'absolute top-4': sorcerer,
+                    }"
+                >
+                    {{ free }}
+                </span>
+            </SpellSlot>
         </section>
     </article>
 </template>
