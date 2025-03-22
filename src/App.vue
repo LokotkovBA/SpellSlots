@@ -12,6 +12,7 @@ import { spellslotsSchema } from './utils/schemas';
 import { z } from 'zod';
 import { calculateActionWidth } from './utils/helpers';
 import OBR from '@owlbear-rodeo/sdk';
+import TurnCount from './components/TurnCount.vue';
 
 const slotModal = ref<ModalRef>(null);
 const spModal = ref<ModalRef>(null);
@@ -195,6 +196,8 @@ function convertSP() {
                 Convert sorcery points
             </MainButton>
         </section>
+
+        <TurnCount />
     </main>
 
     <ModalWrapper
