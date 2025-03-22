@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { OBR_METADATA_KEY } from '@/utils/consts';
+import OBR from '@owlbear-rodeo/sdk';
+import { onMounted, ref, watch } from 'vue';
+import { z } from 'zod';
+
+const turnSchema = z.object({ turnNumber: z.number() });
 
 const count = ref(1);
 
@@ -10,6 +15,51 @@ function decr() {
         count.value = 0;
     }
 }
+
+watch(count, async (turnNumber) => {
+    const metadata = (await OBR.room.getMetadata())[OBR_METADATA_KEY];
+
+    if (!metadata) {
+        OBR.room.setMetadata({
+            [OBR_METADATA_KEY]: {
+                turnNumber,
+            },
+        });
+
+        return;
+    }
+
+    OBR.room.setMetadata({
+        [OBR_METADATA_KEY]: {
+            ...metadata,
+            turnNumber,
+        },
+    });
+});
+
+onMounted(() => {
+    OBR.onReady(async () => {
+        OBR.room.onMetadataChange((metadata) => {
+            const { data, error } = turnSchema.safeParse(
+                metadata[OBR_METADATA_KEY],
+            );
+
+            if (error) return;
+
+            const { turnNumber } = data;
+
+            count.value = turnNumber;
+        });
+
+        const { data, error } = turnSchema.safeParse(
+            (await OBR.room.getMetadata())[OBR_METADATA_KEY],
+        );
+
+        if (error) return;
+
+        count.value = data.turnNumber;
+    });
+});
 </script>
 
 <template>
